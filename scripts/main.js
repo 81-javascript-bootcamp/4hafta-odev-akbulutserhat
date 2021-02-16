@@ -37,7 +37,7 @@ class MoviesApp {
     createDynamicButton(type,id,name,value,count) {
         return  `<div class="form-check">
             	    <input class="form-check-input" type="${type}" name="${name}" id="${name}${id}" value="${value}">
-                    <label class="form-check-label" for="year${id}">
+                    <label class="form-check-label" for="${name}${id}">
                         ${value} (${count})
                     </label>
                 </div>`
@@ -96,11 +96,21 @@ class MoviesApp {
         })
     }
 
+    resetCheckBoxes() {
+        Array.from(document.querySelectorAll(`input[name='${this.genreHandler}']:checked`)).map(tag => tag.checked = false);
+    }
+
+    resetRadioButton() {
+      document.querySelector(`input[name='${this.yearHandler}']:checked`).checked = false;
+    }
+
 
     handleSearch(){
         this.$searchForm.addEventListener("submit", (event) => {
             event.preventDefault();
             this.reset();
+            this.resetCheckBoxes();
+            this.resetRadioButton();
             const searchValue = this.$searchInput.value;
             const matchedMovies = data.filter((movie) => {
                 return searchMovieByTitle(movie, searchValue);
@@ -113,6 +123,7 @@ class MoviesApp {
     handleYearFilter(){
         this.$yearSubmitter.addEventListener("click", () => {
             this.reset();
+            this.resetCheckBoxes();
             const selectedYear = document.querySelector(`input[name='${this.yearHandler}']:checked`).value;
             const matchedMovies = data.filter((movie) => {
                 return movie.year === selectedYear;
@@ -123,6 +134,7 @@ class MoviesApp {
     handleGenreFilter() {
         this.$genreSubmitter.addEventListener("click",() => {
             this.reset();
+            this.resetRadioButton();
             // Seçilen checkboxların değerleri çekilip arraye atıldı.
             const selectedGenres = Array.from(document.querySelectorAll(`input[name='${this.genreHandler}']:checked`))
                                     .map((tag) => tag.value);
