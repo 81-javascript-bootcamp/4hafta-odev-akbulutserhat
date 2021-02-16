@@ -101,7 +101,9 @@ class MoviesApp {
     }
 
     resetRadioButton() {
-      document.querySelector(`input[name='${this.yearHandler}']:checked`).checked = false;
+      const checkedRadioButton = document.querySelector(`input[name='${this.yearHandler}']:checked`);
+      if(!checkedRadioButton) return;
+      checkedRadioButton.checked = false;
     }
 
 
